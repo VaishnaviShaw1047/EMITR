@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pagestyle.css') }}">
+    <title>CSS Login Screen Tutorial</title>
+</head>
+<body>
+    <div class="quiz-container">
+        <div id="question-container">
+            {% set parent_index = (current_page - 1) * questions_per_page %}
+            {% for question in quiz_data %}
+            <div class="question">
+                <h2>Question {{ parent_index + loop.index }}</h2>
+                <p>{{ question.question }}</p>
+                <form>
+                    {% for option in question.options %}
+                    <label>
+                        <input type="radio" name="answer-{{ parent_index + loop.index0 }}" value="{{ option }}">
+                        {{ option }}
+                    </label>
+                    {% endfor %}
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        <div id="pagination">
+            <a href="?page={{ current_page - 1 }}" id="prev-button">Previous</a>
+            <span id="page-info">Page {{ current_page }} of {{ (quiz_data|length // 4) + 1 }}</span>
+            <a href="?page={{ current_page + 1 }}" id="next-button">Next</a>
+        </div>
+        <p id="feedback"></p>
+        <!-- Display total marks scored till the previous page -->
+        <p>Total Marks Scored: {{ total_marks_scored }}</p>
+
+        <!-- Display the percentage of remaining questions to attempt -->
+        <p>Remaining Questions: {{ percentage_remaining }}%</p>
+    </div>
+</body>
+</html>
